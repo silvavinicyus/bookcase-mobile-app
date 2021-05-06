@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todlist/controllers/BookController.dart';
 import 'package:todlist/core/AppRoutes.dart';
-import 'package:todlist/screens/HomePage/HomePageController.dart';
+// import 'package:todlist/screens/HomePage/bookController.dart';
 import 'package:provider/provider.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,23 +11,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomePageController homePageController;
+  BookController bookController;
 
   @override
   void initState() {        
     super.initState();    
-    Future.delayed(Duration.zero, (){homePageController.getTasks();});        
+    Future.delayed(Duration.zero,  () async {    
+      await bookController.getBooks();
+      print(bookController.books);
+    });             
   }
   
   @override
   Widget build(BuildContext context) {
-    
-    homePageController = context.watch<HomePageController>();
-
+    bookController  = context.watch<BookController>();
+    print(bookController.books);    
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Tasks"),        
+        title: Text("Livros"),        
       ),
       body: Container(
         alignment: Alignment.center,
@@ -33,10 +37,10 @@ class _HomePageState extends State<HomePage> {
           builder: (_, __, ___) =>  Padding(
             padding: const EdgeInsets.all(2.0),
             child: ListView.builder(
-              itemCount: homePageController.tasks.value.length,
+              itemCount: bookController.books.value.length,
               itemBuilder: (context, index) => ListTile(
-                title: Text(homePageController.tasks.value[index]['name']),  
-                subtitle: Text(homePageController.tasks.value[index]['hours']),        
+                title: Text(bookController.books.value[index].title),  
+                subtitle: Text(bookController.books.value[index].pages),        
                 trailing: SizedBox(                  
                   width: 100,
                   child: Row( 
@@ -46,24 +50,27 @@ class _HomePageState extends State<HomePage> {
                         icon: Icon(Icons.edit), 
                         color: Colors.yellow,
                         onPressed: () async {
-                          await homePageController.deleteTasks(homePageController.tasks.value[index]['id']);
+                          await bookController.deleteBooks(bookController.books.value[index].id);
                         },
                       ),
                       IconButton(
                         icon: Icon(Icons.delete), 
                         color: Colors.red,
                         onPressed: () async {
-                          await homePageController.deleteTasks(homePageController.tasks.value[index]['id']);
+                          await bookController.deleteBooks(bookController.books.value[index].id);
                         },
                       ),                      
                     ],
                   ),
-                )                              
+                ),
+                onTap: (){
+                  // Navigator.of(context).pushNamed(Routes.)
+                },                              
               ),              
               shrinkWrap: true,
             ),
           ),
-          valueListenable: homePageController.tasks,
+          valueListenable: bookController.books,
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
