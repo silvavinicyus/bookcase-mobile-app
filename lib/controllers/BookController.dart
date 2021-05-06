@@ -48,6 +48,14 @@ class BookController extends ChangeNotifier{
 
   void setPages(String pages){
     this.pages.text = pages;
+  }  
+
+  clearFields(){
+    this.title.clear();
+    this.author.clear();
+    this.genre.clear();
+    this.publisher.clear();
+    this.pages.clear();
   }
 
   Future<List<Book>> getBooks() async {

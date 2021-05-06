@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();    
     Future.delayed(Duration.zero,  () async {    
       await bookController.getBooks();
-      print(bookController.books);
+      // print(bookController.books);
     });             
   }
   
@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
         title: Text("Livros"),        
       ),
       body: Container(
+        // color:  Colors.lightGreen,
         alignment: Alignment.center,
         child: ValueListenableBuilder(
           builder: (_, __, ___) =>  Padding(
@@ -40,6 +41,7 @@ class _HomePageState extends State<HomePage> {
               itemCount: bookController.books.value.length,
               itemBuilder: (context, index) => ListTile(
                 title: Text(bookController.books.value[index].title),  
+                leading: Text(bookController.books.value[index].publisher),
                 subtitle: Text(bookController.books.value[index].pages),        
                 trailing: SizedBox(                  
                   width: 100,
@@ -64,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 onTap: (){
-                  // Navigator.of(context).pushNamed(Routes.)
+                  Navigator.of(context).pushNamed(Routes.SHOW_BOOK, arguments: bookController.books.value[index]);
                 },                              
               ),              
               shrinkWrap: true,
@@ -92,7 +94,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
-          Navigator.of(context).pushNamed(Routes.ADD_TASK);
+          Navigator.of(context).pushNamed(Routes.ADD_BOOK);
         },
       )
     );

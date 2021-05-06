@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todlist/controllers/BookController.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 class AddBookWidget extends StatefulWidget {
   @override
@@ -56,13 +57,29 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                   decoration: InputDecoration(
                     hintText: "Quantidade de páginas"
                   ),
-                  controller: bookController.pages,
+                  controller: bookController.pages,                  
                 ),                
                 SizedBox(height: 10),
                 ElevatedButton(                              
                   onPressed: () async {
-                    await bookController.addBook();
-                    Navigator.pop(context);
+                    try{
+                      await bookController.addBook();
+                      bookController.clearFields();           
+                      Navigator.pop(context);
+                    } catch(err){       
+                      print(err.toString());
+
+                      CoolAlert.show(
+                        context: context, 
+                        title: "Erro!",
+                        type: CoolAlertType.error, 
+                        text: "O Livro que você está tentando adicionar já existe!",
+                        backgroundColor: Colors.red,
+                        confirmBtnColor: Colors.red,                                                                
+                      );
+
+                      bookController.title.clear();
+                    }
                   },
                   child: Text("Adicionar"),
                   style: ButtonStyle(
@@ -73,7 +90,6 @@ class _AddBookWidgetState extends State<AddBookWidget> {
             ),
           ),
         ),
-
       ),
     );    
   }
