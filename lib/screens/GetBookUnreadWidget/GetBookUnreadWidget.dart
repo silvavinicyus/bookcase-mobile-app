@@ -36,21 +36,14 @@ class _GetBookUnreadState extends State<GetBookUnread> {
             itemBuilder: (context, index) => Visibility(
               visible: !widget.bookController.booksFiltered.value[index].read,
               child: ListTile(
-                title: Text(widget.bookController.booksFiltered.value[index].title),  
-                leading: Text(widget.bookController.booksFiltered.value[index].publisher),
-                subtitle: Text(widget.bookController.booksFiltered.value[index].pages),        
+                title: Text(widget.bookController.booksFiltered.value[index].title),                  
+                leading: Text(widget.bookController.booksFiltered.value[index].pages),                
+                subtitle: Text(widget.bookController.booksFiltered.value[index].publisher),        
                 trailing: SizedBox(                  
                   width: 100,
                   child: Row( 
                     mainAxisAlignment: MainAxisAlignment.end,                   
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit), 
-                        color: Colors.yellow,
-                        onPressed: () async {
-                          await widget.bookController.deleteBooks(widget.bookController.booksFiltered.value[index].id);
-                        },
-                      ),
+                    children: [                    
                       IconButton(
                         icon: Icon(Icons.delete), 
                         color: Colors.red,
@@ -61,9 +54,9 @@ class _GetBookUnreadState extends State<GetBookUnread> {
                     ],
                   ),
                 ),
-                onTap: (){
-                  Navigator.of(context).pushNamed(Routes.SHOW_BOOK, arguments: widget.bookController.booksFiltered.value[index]);
-                },                              
+                // onTap: (){
+                //   Navigator.of(context).pushNamed(Routes.SHOW_BOOK, arguments: widget.bookController.booksFiltered.value[index]);
+                // },                              
               ),
             ),              
             shrinkWrap: true,

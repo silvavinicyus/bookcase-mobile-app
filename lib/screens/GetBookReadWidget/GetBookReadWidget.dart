@@ -38,11 +38,11 @@ class _GetBookReadState extends State<GetBookRead> {
           child: ListView.builder(
             itemCount: widget.bookController.booksFiltered.value.length,
             itemBuilder: (context, index) => Visibility(
-                visible: widget.bookController.booksFiltered.value[index].read,
-                child: ListTile(
+              visible: widget.bookController.booksFiltered.value[index].read,
+              child: ListTile(
                 title: Text(widget.bookController.booksFiltered.value[index].title),  
-                leading: Text(widget.bookController.booksFiltered.value[index].publisher),
-                subtitle: Text(widget.bookController.booksFiltered.value[index].pages),        
+                leading: Text(widget.bookController.booksFiltered.value[index].pages),
+                subtitle: Text(widget.bookController.booksFiltered.value[index].publisher),         
                 trailing: SizedBox(                  
                   width: 100,
                   child: Row( 
@@ -58,9 +58,9 @@ class _GetBookReadState extends State<GetBookRead> {
                     ],
                   ),
                 ),
-                onTap: (){
-                  Navigator.of(context).pushNamed(Routes.SHOW_BOOK, arguments: widget.bookController.booksFiltered.value[index]);
-                },                              
+                // onTap: (){
+                //   Navigator.of(context).pushNamed(Routes.SHOW_BOOK, arguments: widget.bookController.booksFiltered.value[index]);
+                // },                              
               ),
             ),              
             shrinkWrap: true,

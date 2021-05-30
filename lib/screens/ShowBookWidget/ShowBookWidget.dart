@@ -19,7 +19,15 @@ class _ShowBookWidgetState extends State<ShowBookWidget> {
         centerTitle: true,
         title: Text(widget.book.title),
       ),
-      body: Container(),
+      body: Container(
+        child: Column(
+          children: [
+            Text(
+              widget.book.title
+            )
+          ],
+        ),
+      ),
     );
   }
 }
