@@ -3,6 +3,8 @@ import 'package:todlist/controllers/BookController.dart';
 import 'package:todlist/core/AppRoutes.dart';
 // import 'package:todlist/screens/HomePage/bookController.dart';
 import 'package:provider/provider.dart';
+import 'package:todlist/screens/GetBookReadWidget/GetBookReadWidget.dart';
+import 'package:todlist/screens/GetBookUnreadWidget/GetBookUnreadWidget.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -12,79 +14,35 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   BookController bookController;
+  int _currerntIndex = 0;
 
   @override
   void initState() {        
-    super.initState();    
-    Future.delayed(Duration.zero,  () async {    
-      await bookController.getBooks();
-      // print(bookController.books);
-    });             
+    super.initState();                
   }
   
   @override
   Widget build(BuildContext context) {
     bookController  = context.watch<BookController>();
-    print(bookController.books);    
+    // print(bookController.books); 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text("Livros"),        
       ),
-      body: Container(
-        // color:  Colors.lightGreen,
-        alignment: Alignment.center,
-        child: ValueListenableBuilder(
-          builder: (_, __, ___) =>  Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: ListView.builder(
-              itemCount: bookController.books.value.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(bookController.books.value[index].title),  
-                leading: Text(bookController.books.value[index].publisher),
-                subtitle: Text(bookController.books.value[index].pages),        
-                trailing: SizedBox(                  
-                  width: 100,
-                  child: Row( 
-                    mainAxisAlignment: MainAxisAlignment.end,                   
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit), 
-                        color: Colors.yellow,
-                        onPressed: () async {
-                          await bookController.deleteBooks(bookController.books.value[index].id);
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete), 
-                        color: Colors.red,
-                        onPressed: () async {
-                          await bookController.deleteBooks(bookController.books.value[index].id);
-                        },
-                      ),                      
-                    ],
-                  ),
-                ),
-                onTap: (){
-                  Navigator.of(context).pushNamed(Routes.SHOW_BOOK, arguments: bookController.books.value[index]);
-                },                              
-              ),              
-              shrinkWrap: true,
-            ),
-          ),
-          valueListenable: bookController.books,
-        ),
-      ),
+      body: _currerntIndex == 0 ? GetBookRead(bookController: bookController) : GetBookUnread(bookController: bookController),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currerntIndex,
+        onTap: (value) {
+          setState(() {
+            _currerntIndex = value;
+          });
+        },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.book_rounded),
-            label: "Lidos"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_outlined),
-            label: "Lendo"
-          ),
+            label: "Lidos",              
+          ),          
           BottomNavigationBarItem(
             icon: Icon(Icons.library_books_outlined),
             label: "Quero Ler"

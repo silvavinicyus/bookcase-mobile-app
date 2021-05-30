@@ -13,10 +13,11 @@ class _AddBookWidgetState extends State<AddBookWidget> {
   void initState() {    
     super.initState();
   }
-
+  bool _isChecked = false;
+  
   @override
   Widget build(BuildContext context) {  
-    BookController bookController = context.watch<BookController>();  
+    BookController bookController = context.watch<BookController>();     
 
     return Scaffold(
       appBar: AppBar(
@@ -58,12 +59,27 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                     hintText: "Quantidade de páginas"
                   ),
                   controller: bookController.pages,                  
-                ),                
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      // title: Text("Lido"),
+                      value: _isChecked,                  
+                      onChanged: (value) {  
+                        setState((){                          
+                          _isChecked = !_isChecked;
+                          // print(_isChecked);
+                        });   
+                      },                      
+                    ),
+                    Text("Lido"),
+                  ],
+                ),
                 SizedBox(height: 10),
                 ElevatedButton(                              
                   onPressed: () async {
                     try{
-                      await bookController.addBook();
+                      await bookController.addBook(_isChecked);
                       bookController.clearFields();           
                       Navigator.pop(context);
                     } catch(err){       

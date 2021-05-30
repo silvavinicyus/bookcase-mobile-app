@@ -9,6 +9,7 @@ class Book {
   String genre;
   String publisher;
   String pages;
+  bool read;
   Book({
     @required this.id,
     @required this.title,
@@ -16,9 +17,8 @@ class Book {
     @required this.genre,
     @required this.publisher,
     @required this.pages,
+    @required this.read,
   });
-  // bool read;
-    
 
   Book copyWith({
     String id,
@@ -27,6 +27,7 @@ class Book {
     String genre,
     String publisher,
     String pages,
+    bool read,
   }) {
     return Book(
       id: id ?? this.id,
@@ -35,6 +36,7 @@ class Book {
       genre: genre ?? this.genre,
       publisher: publisher ?? this.publisher,
       pages: pages ?? this.pages,
+      read: read ?? this.read,
     );
   }
 
@@ -46,6 +48,7 @@ class Book {
       'genre': genre,
       'publisher': publisher,
       'pages': pages,
+      'read': read,
     };
   }
 
@@ -57,6 +60,7 @@ class Book {
       genre: map['genre'],
       publisher: map['publisher'],
       pages: map['pages'],
+      read: map['read'],
     );
   }
 
@@ -66,7 +70,7 @@ class Book {
 
   @override
   String toString() {
-    return 'Book(id: $id, title: $title, author: $author, genre: $genre, publisher: $publisher, pages: $pages)';
+    return 'Book(id: $id, title: $title, author: $author, genre: $genre, publisher: $publisher, pages: $pages, read: $read)';
   }
 
   @override
@@ -79,7 +83,8 @@ class Book {
       other.author == author &&
       other.genre == genre &&
       other.publisher == publisher &&
-      other.pages == pages;
+      other.pages == pages &&
+      other.read == read;
   }
 
   @override
@@ -89,6 +94,7 @@ class Book {
       author.hashCode ^
       genre.hashCode ^
       publisher.hashCode ^
-      pages.hashCode;
+      pages.hashCode ^
+      read.hashCode;
   }
 }

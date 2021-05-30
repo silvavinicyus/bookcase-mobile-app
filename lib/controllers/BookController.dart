@@ -7,9 +7,11 @@ class BookController extends ChangeNotifier{
   
   BookController(){
     this.getBooks();
+    this.filterBooks();
   }
 
-  final books = ValueNotifier<List<Book>>([]);  
+  final books = ValueNotifier<List<Book>>([]);   
+  final booksFiltered = ValueNotifier<List<Book>>([]);   
   final dio = Dio(
     BaseOptions(
       baseUrl: "http://10.0.2.2:3333",
@@ -21,6 +23,7 @@ class BookController extends ChangeNotifier{
   final genre = TextEditingController();
   final publisher = TextEditingController();
   final pages = TextEditingController();
+  
   // final read = TextEditingController();
 
   String get getTitle => title.text;
@@ -58,6 +61,13 @@ class BookController extends ChangeNotifier{
     this.pages.clear();
   }
 
+  filterBooks({bool read})   {
+    // print(books.value);
+    booksFiltered.value = books.value.map((book) => book.read == read ? book : null).toList()..removeWhere((e) => e == null);
+
+    booksFiltered.notifyListeners();
+  }
+
   Future<List<Book>> getBooks() async {
     try{
       final response = ((await dio.get('/books')).data as List).map((e) => Book.fromMap(e)).toList();    
@@ -76,11 +86,13 @@ class BookController extends ChangeNotifier{
     await dio.delete('/books/$id');
 
     books.value.removeWhere((element) => element.id == id);
+    booksFiltered.value.removeWhere((element) => element.id == id);
     
+    booksFiltered.notifyListeners();
     books.notifyListeners();
   }
 
-  Future<Book> addBook() async {
+  Future<Book> addBook(bool read) async {
     final book = Book.fromMap(
       (await dio.post('/books', data: {      
         "title": getTitle,
@@ -88,12 +100,15 @@ class BookController extends ChangeNotifier{
         "genre": getGenre,
         "publisher": getPublisher,
         "pages": getPages,
-        "read": false
+        "read": read
       }
     )).data );
 
     books.value.add(book);
+    booksFiltered.value.add(book);
+    // this.filterBooks(read: read);
 
+    booksFiltered.notifyListeners();
     books.notifyListeners();   
 
     return book;     

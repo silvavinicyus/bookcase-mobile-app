@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todlist/screens/AddBookWidget/AddBookWidget.dart';
 import 'package:todlist/screens/HomePage/HomePage.dart';
-import 'package:todlist/screens/ShowBookWidget.dart/ShowBookWidget.dart';
+import 'package:todlist/screens/ShowBookWidget/ShowBookWidget.dart';
 
 class Routes {
   static const HOME_PAGE = "/";
